@@ -1,65 +1,231 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+
+export default function Calculator() {
+  const [display, setDisplay] = useState("0");
+  const [previous, setPrevious] = useState<string | null>(null);
+  const [operation, setOperation] = useState<string | null>(null);
+  const [resetDisplay, setResetDisplay] = useState(false);
+
+  const handleNumber = (num: string) => {
+    if (resetDisplay) {
+      setDisplay(num);
+      setResetDisplay(false);
+    } else {
+      setDisplay(display === "0" ? num : display + num);
+    }
+  };
+
+  const handleDecimal = () => {
+    if (resetDisplay) {
+      setDisplay("0.");
+      setResetDisplay(false);
+    } else if (!display.includes(".")) {
+      setDisplay(display + ".");
+    }
+  };
+
+  const handleOperation = (op: string) => {
+    if (previous !== null && operation !== null && !resetDisplay) {
+      calculate();
+    }
+    setPrevious(display);
+    setOperation(op);
+    setResetDisplay(true);
+  };
+
+  const calculate = () => {
+    if (previous === null || operation === null) return;
+
+    const prev = parseFloat(previous);
+    const current = parseFloat(display);
+    let result = 0;
+
+    switch (operation) {
+      case "+":
+        result = prev + current;
+        break;
+      case "-":
+        result = prev - current;
+        break;
+      case "×":
+        result = prev * current;
+        break;
+      case "÷":
+        result = current !== 0 ? prev / current : 0;
+        break;
+    }
+
+    setDisplay(result.toString());
+    setPrevious(null);
+    setOperation(null);
+    setResetDisplay(true);
+  };
+
+  const clear = () => {
+    setDisplay("0");
+    setPrevious(null);
+    setOperation(null);
+    setResetDisplay(false);
+  };
+
+  const clearEntry = () => {
+    setDisplay("0");
+  };
+
+  const backspace = () => {
+    if (display.length > 1) {
+      setDisplay(display.slice(0, -1));
+    } else {
+      setDisplay("0");
+    }
+  };
+
+  const toggleSign = () => {
+    const value = parseFloat(display) * -1;
+    setDisplay(value.toString());
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl shadow-2xl p-8 w-full max-w-md border border-slate-700/50">
+        <div className="bg-slate-900/80 rounded-2xl p-6 mb-6 border border-slate-700/30">
+          <div className="text-slate-500 text-sm mb-1 h-6">
+            {previous && operation && `${previous} ${operation}`}
+          </div>
+          <div className="text-white text-5xl font-light text-right overflow-hidden">
+            {display}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <div className="grid grid-cols-4 gap-3">
+          <button
+            onClick={clear}
+            className="bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            C
+          </button>
+          <button
+            onClick={clearEntry}
+            className="bg-gradient-to-br from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
           >
-            Documentation
-          </a>
+            CE
+          </button>
+          <button
+            onClick={backspace}
+            className="bg-gradient-to-br from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            ⌫
+          </button>
+          <button
+            onClick={() => handleOperation("÷")}
+            className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg text-xl"
+          >
+            ÷
+          </button>
+
+          <button
+            onClick={() => handleNumber("7")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            7
+          </button>
+          <button
+            onClick={() => handleNumber("8")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            8
+          </button>
+          <button
+            onClick={() => handleNumber("9")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            9
+          </button>
+          <button
+            onClick={() => handleOperation("×")}
+            className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg text-xl"
+          >
+            ×
+          </button>
+
+          <button
+            onClick={() => handleNumber("4")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            4
+          </button>
+          <button
+            onClick={() => handleNumber("5")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            5
+          </button>
+          <button
+            onClick={() => handleNumber("6")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            6
+          </button>
+          <button
+            onClick={() => handleOperation("-")}
+            className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg text-xl"
+          >
+            −
+          </button>
+
+          <button
+            onClick={() => handleNumber("1")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            1
+          </button>
+          <button
+            onClick={() => handleNumber("2")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            2
+          </button>
+          <button
+            onClick={() => handleNumber("3")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            3
+          </button>
+          <button
+            onClick={() => handleOperation("+")}
+            className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg text-xl"
+          >
+            +
+          </button>
+
+          <button
+            onClick={toggleSign}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            ±
+          </button>
+          <button
+            onClick={() => handleNumber("0")}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            0
+          </button>
+          <button
+            onClick={handleDecimal}
+            className="bg-gradient-to-br from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg"
+          >
+            .
+          </button>
+          <button
+            onClick={calculate}
+            className="bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold py-6 rounded-xl transition-all duration-150 active:scale-95 shadow-lg text-xl"
+          >
+            =
+          </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

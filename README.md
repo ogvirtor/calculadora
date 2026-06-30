@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Calculadora Next.js
 
-## Getting Started
+Uma calculadora moderna e funcional desenvolvida com Next.js, TypeScript e Tailwind CSS.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+![Preview da Calculadora](calculadora.png)
+
+## Sobre o Projeto
+
+Este é meu primeiro projeto em Next.js! Desenvolvi esta calculadora para aprender os fundamentos do framework e criar uma aplicação funcional do zero. Todo o código Next.js, a lógica da calculadora e a estrutura do projeto foram implementados por mim.
+
+### Funcionalidades
+
+- Operações básicas: adição, subtração, multiplicação e divisão
+- Suporte a números decimais
+- Função backspace para corrigir entrada
+- Inversão de sinal (positivo/negativo)
+- Botões C (clear) e CE (clear entry)
+- Interface responsiva
+- Design moderno
+
+## Começando
+
+### Pré-requisitos
+
+- Node.js 18 ou superior
+- npm ou yarn
+
+### Instalação
 
 ```bash
+# Clone o repositório
+git clone [seu-repositorio]
+
+# Entre na pasta do projeto
+cd calculadora
+
+# Instale as dependências
+npm install
+
+# Execute o projeto em modo desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tecnologias Utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js 14** - Framework React para aplicações web
+- **TypeScript** - JavaScript com tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **React Hooks** - useState para gerenciamento de estado
 
-## Learn More
+## Como Usar
 
-To learn more about Next.js, take a look at the following resources:
+1. Clique nos números para inserir valores
+2. Selecione uma operação (+, -, ×, ÷)
+3. Insira o segundo número
+4. Pressione = para calcular o resultado
+5. Use C para limpar completamente ou CE para limpar apenas a entrada atual
+6. O botão ⌫ remove o último dígito digitado
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estrutura do Código
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A calculadora utiliza React Hooks para gerenciar o estado:
 
-## Deploy on Vercel
+- `display`: valor mostrado na tela
+- `previous`: valor anterior para operações
+- `operation`: operação selecionada (+, -, ×, ÷)
+- `resetDisplay`: flag para controlar quando resetar o display
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Todas as funções de cálculo e manipulação de estado foram desenvolvidas do zero como parte do aprendizado de Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Créditos
+
+**Desenvolvimento:** Todo o código Next.js, lógica da aplicação e funcionalidades foram desenvolvidos por mim como projeto de aprendizado.
+
+**Assistência de Design:** Kiro IA auxiliou com sugestões de paleta de cores, gradientes CSS e escolha de alguns ícones para os botões.
+
+## Licença
+
+Este projeto está sob a licença MIT.
+
+## Autor
+
+Projeto desenvolvido como primeiro contato com Next.js.
